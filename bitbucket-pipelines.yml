@@ -1,0 +1,38 @@
+definitions:
+  caches:
+    go-modules: $GOPATH/pkg/mod
+  steps:
+    - step: &test-go
+        image: golang
+        caches:
+          - go-modules
+        script:
+          - go version
+          - make test
+    - step: &deploy-go
+        image: golang
+        caches:
+          - go-modules
+        script:
+          - go version
+          - make build
+          - TARGET=qsls-$BITBUCKET_TAG
+          - mv qsls $TARGET
+          - gzip $TARGET
+          - TARGET=$TARGET.gz
+          - pipe: atlassian/bitbucket-upload-file:0.1.3
+            variables:
+              BITBUCKET_USERNAME: $BB_USERNAME
+              BITBUCKET_APP_PASSWORD: $BB_APP_PASSWORD
+              FILENAME: $TARGET
+pipelines:
+  branches:
+    develop:
+      - step:
+          name: go-test
+          <<: *test-go
+  tags:
+    v*:
+      - step:
+          name: go-deploy
+          <<: *deploy-go

@@ -1,0 +1,68 @@
+\documentclass{article}
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{anyfontsize}
+\usepackage[papersize={14cm,9cm}, margin=0cm, marginratio=1:1]{geometry}
+
+\begin{document}
+{{ range $i, $qsl := .QSLs}}    % loop thru all QSLCards recods
+
+	\hbox{\vbox to 0.4cm{}}     % top padding
+
+	\hbox to \hsize{            % container with callsigns
+		\hfill
+		\newbox\callsign
+		\hbox{\vbox to 3cm{
+			\setbox\callsign = \hbox{\fontsize{55}{55}\bfseries{}\hspace{0cm}{MY0CALL}}
+
+			\hbox{\usebox{\callsign}}
+
+			\vspace{0.1cm}
+
+			\hbox to \wd\callsign{%
+				\hfil%
+				{\itshape{}confirming QSO with}%
+				\hfil%
+			}
+
+			\vspace{0.3cm}
+
+			\hbox to \wd\callsign{\selectfont\fontsize{25}{55}\textbf{ {{ $qsl.Callsign }} }}   % Callsign
+
+			{{ if ne $qsl.QSLVia "" }}      % if QSLCard has QSLVia property
+				\vspace{-0.1cm}
+				\hbox to \wd\callsign{%
+					\hfil%
+					{\itshape{}via}%
+					\hfil%
+				}
+				\vspace{0.1cm}
+
+				\hbox to \wd\callsign{\selectfont\fontsize{15}{35}\textbf{ {{ $qsl.QSLVia }} }} % insert QSLVia call
+			{{end}}
+
+			\vfill
+		}}
+		\hfill
+	}
+	\vspace{2cm}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            \bf\quad Date (DMY) \quad & \bf\ Time (UTC)\ &\bf\quad{}MHz\quad&\bf\ Mode\ &\bf\ RST\\
+            \hline
+
+            {{ range $q, $qso := .QSOs}}  % range all QSOs within the QSLCard
+                \hline
+                \vphantom{$\dfrac b b$} {{ $qso.Time.Format "2. 1. 2006" }} & {{ $qso.Time.Format "15:04" }} & {{ $qso.Freq }} & {{ $qso.Mode }} & {{ $qso.RstSent }}\\
+            {{ end }}
+
+            \hline
+        \end{tabular}
+
+        \newpage
+    \end{center}
+{{end}}     % loop end
+
+\end{document}

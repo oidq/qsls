@@ -1,0 +1,9 @@
+<ADIF_VER:5>3.0.9
+<CREATED_TIMESTAMP:15>20191229 133620
+<PROGRAMID:8>Example
+<EOH>
+
+
+<call:6>XX3XX <qso_date:8>20191228 <time_on:6>080425 <band:3>40m <freq:8>7.198500  <mode:3>SSB <rst_sent:2>57 <eor>
+<call:6>XX3XX <qso_date:8>20191228 <time_on:6>080425 <band:3>40m <freq:8>7.198500  <mode:3>SSB <rst_sent:2>58 <eor>
+<call:6>XX1XX <qsl_via:6>XX2XX <qso_date:8>20191228 <time_on:6>080425 <band:3>40m <freq:8>7.198500  <mode:3>SSB <rst_sent:2>59 <eor>
