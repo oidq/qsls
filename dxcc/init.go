@@ -2,12 +2,14 @@ package dxcc
 
 import (
 	"encoding/csv"
-	"github.com/pkg/errors"
 	"io"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/elliotwutingfeng/asciiset"
+	"github.com/pkg/errors"
 )
 
 type Entities []Entity
@@ -93,20 +95,21 @@ func splitPrefixes(pfx string) []string {
 
 func prefixRegexp(pfx string) string {
 
-	initialChars := map[byte]struct{}{}
+	initialChars, _ := asciiset.MakeASCIISet("")
 	pfx = strings.Replace(pfx, ";", "", -1)
 	for _, p := range strings.Split(pfx, " ") {
 		switch p[0] {
 		case '=':
-			initialChars[p[1]] = struct{}{}
+			initialChars.Add(p[1])
 		default:
-			initialChars[p[0]] = struct{}{}
+			initialChars.Add(p[0])
 		}
 	}
 	sorted := []byte{}
-	for c := range initialChars {
+	initialChars.Visit(func(c byte) bool {
 		sorted = append(sorted, c)
-	}
+		return false
+	})
 	sort.Slice(sorted, func(i, j int) bool {
 		return sorted[i] < sorted[j]
 	})

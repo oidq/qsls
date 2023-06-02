@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/dustin/go-humanize v1.0.0
+	github.com/elliotwutingfeng/asciiset v0.0.0-20230602010337-0d6afe084374
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/rwestlund/gotex v0.0.0-20170412080108-3c68d9bfff3b
